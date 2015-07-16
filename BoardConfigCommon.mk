@@ -143,6 +143,7 @@ ifeq ($(HOST_OS),linux)
     endif
   endif
 endif
+WITH_DEXPREOPT_PIC := true
 DONT_DEXPREOPT_PREBUILTS := true
 
 # RIL
