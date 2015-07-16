@@ -30,6 +30,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/7x27a_kp.kl:system/usr/keylayout/7x27a_kp.kl \
     $(LOCAL_PATH)/configs/AudioFilter.csv:system/etc/AudioFilter.csv
 
+# Media
+PRODUCT_COPY_FILES += \
+    frameworks/av/media/libstagefright/data/media_codecs_google_audio.xml:system/etc/media_codecs_google_audio.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:system/etc/media_codecs_google_telephony.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_google_video_le.xml:system/etc/media_codecs_google_video_le.xml \
+    frameworks/av/media/libstagefright/data/media_codecs_ffmpeg.xml:system/etc/media_codecs_ffmpeg.xml
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/media_codecs.xml:system/etc/media_codecs.xml \
     $(LOCAL_PATH)/configs/media_profiles.xml:system/etc/media_profiles.xml \
@@ -72,11 +79,13 @@ PRODUCT_COPY_FILES += \
 
 # display HALS
 PRODUCT_PACKAGES += \
-    gralloc.msm7x27a \
+    libgenlock \
     copybit.msm7x27a \
+    gralloc.msm7x27a \
     libqdMetaData \
     memtrack.msm7x27a \
-    hwcomposer.msm7x27a
+    hwcomposer.msm7x27a \
+    libtilerenderer
 
 # off-mode charging
 PRODUCT_PACKAGES += \
@@ -112,14 +121,12 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
 
-# audio 
-PRODUCT_PACKAGES += \
-    libaudioutils \
-    audio.a2dp.default \
-    audio.usb.default \
-    audio.primary.msm7x27a \
-    audio_policy.msm7x27a \
-    libaudio-resampler
+# audio
+#PRODUCT_PACKAGES += \
+#    audio.primary.msm7x27a \
+#    audio.a2dp.default \
+#    audio.usb.default \
+#    libaudioutils
 
 # light hal
 PRODUCT_PACKAGES += \
@@ -128,6 +135,7 @@ PRODUCT_PACKAGES += \
 # Radio properties
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=LGEQualcommUiccRIL \
+    ro.telephony.ril.config=qcomdsds,skippinpukcount,signalstrength \
     ro.telephony.default_network=0 \
     ro.telephony.call_ring.multiple=0 \
     telephony.lteOnGsmDevice=0 \
@@ -142,6 +150,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.composition.type=dyn \
     persist.hwc.mdpcomp.enable=false \
     com.qc.hardware=true \
+    debug.mdpcomp.logs=0 \
     debug.gralloc.map_fb_memory=1 \
     debug.hwc.fakevsync=1
 
@@ -169,8 +178,46 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=/system/lib/libqc-opt.so
 
-# Enable Torch
-PRODUCT_PACKAGES += Torch
+# WiFi
+PRODUCT_PACKAGES += \
+   libwpa_client \
+   hostapd \
+   dhcpcd.conf \
+   wpa_supplicant \
+   wpa_supplicant.conf
+ 
+# Disable atlas services on low-ram targets
+PRODUCT_PROPERTY_OVERRIDES += \
+  config.disable_atlas=true 
+
+
+# Use ART small mode
+PRODUCT_PROPERTY_OVERRIDES += \
+   dalvik.vm.dex2oat-filter=interpret-only \
+   dalvik.vm.dex2oat-flags=--no-watch-dog \
+   dalvik.vm.image-dex2oat-filter=speed
+
+# ART properties
+ADDITIONAL_DEFAULT_PROPERTIES += \
+   dalvik.vm.dex2oat-Xms=8m \
+   dalvik.vm.dex2oat-Xmx=96m \
+   dalvik.vm.image-dex2oat-Xms=48m \
+   dalvik.vm.image-dex2oat-Xmx=48m
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.fuse_sdcard=true \
+    audio.offload.disable=1
+    audio.gapless.playback.disable=true \
+    ro.sys.fw.bg_apps_limit=10 \
+    ro.config.max_starting_bg=6
+
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=mtp \
+    ro.vold.umsdirtyratio=50
+
+# Newer camera API isn't supported.
+PRODUCT_PROPERTY_OVERRIDES += \
+   camera2.portability.force_api=1
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 PRODUCT_MANUFACTURER := LGE
