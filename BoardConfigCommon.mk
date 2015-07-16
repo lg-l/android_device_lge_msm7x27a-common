@@ -134,11 +134,16 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
 TARGET_BOOTANIMATION_PRELOAD := true
 TARGET_BOOTANIMATION_TEXTURE_CACHE := true
 
+
 # Enable dex-preoptimization to speed up first boot sequence
-WITH_DEXPREOPT := true
-WITH_DEXPREOPT_PIC := true
+ifeq ($(HOST_OS),linux)
+  ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+    ifeq ($(WITH_DEXPREOPT),)
+      WITH_DEXPREOPT := true
+    endif
+  endif
+endif
 DONT_DEXPREOPT_PREBUILTS := true
-WITH_DEXPREOPT_COMP=false
 
 # RIL
 BOARD_RIL_CLASS := ../../../device/lge/msm7x27a-common/ril
