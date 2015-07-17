@@ -39,6 +39,7 @@ TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := cortex-a9
 TARGET_CPU_SMP := true
+BOARD_SUPPRESS_BLOCK_DISCARD := true
 
 # Compiler Optimization
 ARCH_ARM_HIGH_OPTIMIZATION := true
