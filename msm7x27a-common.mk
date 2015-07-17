@@ -122,11 +122,11 @@ PRODUCT_PACKAGES += \
     com.android.future.usb.accessory
 
 # audio
-#PRODUCT_PACKAGES += \
-#    audio.primary.msm7x27a \
-#    audio.a2dp.default \
-#    audio.usb.default \
-#    libaudioutils
+PRODUCT_PACKAGES += \
+    audio.primary.msm7x27a \
+    audio.a2dp.default \
+    audio.usb.default \
+    libaudioutils
 
 # light hal
 PRODUCT_PACKAGES += \
