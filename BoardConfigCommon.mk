@@ -41,6 +41,9 @@ TARGET_CPU_VARIANT := cortex-a9
 TARGET_CPU_SMP := true
 BOARD_SUPPRESS_BLOCK_DISCARD := true
 
+# Enable workaround for slow rom flash
+BOARD_SUPPRESS_SECURE_ERASE := true
+
 # Compiler Optimization
 ARCH_ARM_HIGH_OPTIMIZATION := true
 ARCH_ARM_HIGH_OPTIMIZATION_COMPAT := true
