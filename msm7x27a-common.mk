@@ -11,8 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, vendor/lge/msm7x27a-common/msm7x27a-common-vendor.mk)
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
