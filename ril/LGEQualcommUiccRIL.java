@@ -19,49 +19,27 @@ package com.android.internal.telephony;
 import static com.android.internal.telephony.RILConstants.*;
 
 import android.content.Context;
-import android.os.AsyncResult;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Looper;
 import android.os.Message;
 import android.os.Parcel;
 import android.os.SystemProperties;
-import android.telephony.Rlog;
-import android.telephony.SmsMessage;
 import android.telephony.SignalStrength;
 import android.text.TextUtils;
+import android.telephony.Rlog;
+
 import java.util.ArrayList;
-import android.util.Log;
-
-import com.android.internal.telephony.RILConstants;
-import com.android.internal.telephony.gsm.SmsBroadcastConfigInfo;
-import com.android.internal.telephony.cdma.CdmaInformationRecords;
-
-import com.android.internal.telephony.dataconnection.DataCallResponse;
-import com.android.internal.telephony.dataconnection.DcFailCause;
 
 import com.android.internal.telephony.uicc.IccCardApplicationStatus;
 import com.android.internal.telephony.uicc.IccCardStatus;
 import com.android.internal.telephony.dataconnection.DataCallResponse;
-
 
 /**
  * Custom Qualcomm No SimReady RIL for LGE using the latest Uicc stack
  *
  * {@hide}
  */
-
 public class LGEQualcommUiccRIL extends QualcommSharedRIL implements CommandsInterface {
     boolean RILJ_LOGV = true;
     boolean RILJ_LOGD = true;
-
-    private int mSetPreferredNetworkType = -1;
-    private Message mPendingNetworkResponse;
-
-    public LGEQualcommUiccRIL(Context context, int preferredNetworkType,
-            int cdmaSubscription, Integer instanceId) {
-        this(context, preferredNetworkType, cdmaSubscription);
-    }
 
     public LGEQualcommUiccRIL(Context context, int networkMode, int cdmaSubscription) {
         super(context, networkMode, cdmaSubscription);
@@ -211,3 +189,4 @@ public class LGEQualcommUiccRIL extends QualcommSharedRIL implements CommandsInt
     }
 
 }
+

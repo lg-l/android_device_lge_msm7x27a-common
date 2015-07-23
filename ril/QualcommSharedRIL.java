@@ -30,7 +30,6 @@ import android.os.SystemProperties;
 import android.telephony.SignalStrength;
 import android.text.TextUtils;
 import android.util.Log;
-import android.provider.Settings;
 
 import com.android.internal.telephony.RILConstants;
 import com.android.internal.telephony.gsm.SmsBroadcastConfigInfo;
@@ -49,8 +48,6 @@ import java.util.ArrayList;
  * {@hide}
  */
 public class QualcommSharedRIL extends RIL implements CommandsInterface {
-    static final String LOG_TAG = "QualcommSharedRIL";
-
     protected HandlerThread mIccThread;
     protected IccHandler mIccHandler;
     protected String mAid;
@@ -61,20 +58,15 @@ public class QualcommSharedRIL extends RIL implements CommandsInterface {
     boolean skipCdmaSubcription = needsOldRilFeature("skipCdmaSubcription");
 
     private final int RIL_INT_RADIO_OFF = 0;
-    private final int RIL_INT_RADIO_UNAVAILABLE = 1;
+    private final int RIL_INT_RADIO_UNAVALIABLE = 1;
     private final int RIL_INT_RADIO_ON = 2;
     private final int RIL_INT_RADIO_ON_NG = 10;
     private final int RIL_INT_RADIO_ON_HTC = 13;
 
+
     public QualcommSharedRIL(Context context, int networkMode, int cdmaSubscription) {
         super(context, networkMode, cdmaSubscription);
-//        mSetPreferredNetworkType = -1;
-        mQANElements = 5;
-    }
-
-    public QualcommSharedRIL(Context context, int networkMode, int cdmaSubscription, Integer instanceId) {
-        super(context, networkMode, cdmaSubscription, instanceId);
-//        mSetPreferredNetworkType = -1;
+        mSetPreferredNetworkType = -1;
         mQANElements = 5;
     }
 
@@ -214,10 +206,7 @@ public class QualcommSharedRIL extends RIL implements CommandsInterface {
             mAid = application.aid;
             mUSIM = application.app_type
                       == IccCardApplicationStatus.AppType.APPTYPE_USIM;
-
-            Settings.Global.putInt(mContext.getContentResolver(),
-                        Settings.Global.PREFERRED_NETWORK_MODE,
-                        mPreferredNetworkType );
+            mSetPreferredNetworkType = mPreferredNetworkType;
 
             if (TextUtils.isEmpty(mAid))
                mAid = "";
@@ -344,16 +333,22 @@ public class QualcommSharedRIL extends RIL implements CommandsInterface {
     }
 
     @Override
+    public void setCurrentPreferredNetworkType() {
+        if (RILJ_LOGD) riljLog("setCurrentPreferredNetworkType: " + mSetPreferredNetworkType);
+        setPreferredNetworkType(mSetPreferredNetworkType, null);
+    }
+
+    @Override
     public void setPreferredNetworkType(int networkType , Message response) {
         /**
           * If not using a USIM, ignore LTE mode and go to 3G
           */
-/*        if (!mUSIM && networkType == RILConstants.NETWORK_MODE_LTE_GSM_WCDMA &&
+        if (!mUSIM && networkType == RILConstants.NETWORK_MODE_LTE_GSM_WCDMA &&
                  mSetPreferredNetworkType >= RILConstants.NETWORK_MODE_WCDMA_PREF) {
             networkType = RILConstants.NETWORK_MODE_WCDMA_PREF;
         }
         mSetPreferredNetworkType = networkType;
-*/
+
         super.setPreferredNetworkType(networkType, response);
     }
 
@@ -526,11 +521,6 @@ public class QualcommSharedRIL extends RIL implements CommandsInterface {
             case 106: ret = responseStrings(p); break; // RIL_REQUEST_CDMA_PRL_VERSION
             case 107: ret = responseInts(p);  break; // RIL_REQUEST_IMS_REGISTRATION_STATE
             case RIL_REQUEST_VOICE_RADIO_TECH: ret = responseInts(p); break;
-            case RIL_REQUEST_GET_CELL_INFO_LIST: ret = responseCellInfoList(p); break;
-            case RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE: ret = responseVoid(p); break;
-            case RIL_REQUEST_SET_INITIAL_ATTACH_APN: ret = responseVoid(p); break;
-            case RIL_REQUEST_IMS_REGISTRATION_STATE: ret = responseInts(p); break;
-            case RIL_REQUEST_IMS_SEND_SMS: ret = responseSMS(p); break;
 
             default:
                 throw new RuntimeException("Unrecognized solicited response: " + rr.mRequest);
@@ -643,7 +633,7 @@ public class QualcommSharedRIL extends RIL implements CommandsInterface {
                     mIccHandler = null;
                 }
                 break;
-            case RIL_INT_RADIO_UNAVAILABLE:
+            case RIL_INT_RADIO_UNAVALIABLE:
                 radioState = CommandsInterface.RadioState.RADIO_UNAVAILABLE;
                 break;
             case RIL_INT_RADIO_ON:
@@ -788,3 +778,4 @@ public class QualcommSharedRIL extends RIL implements CommandsInterface {
         send(rr);
     }
 }
+
