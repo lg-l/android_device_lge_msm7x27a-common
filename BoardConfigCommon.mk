@@ -151,6 +151,7 @@ DONT_DEXPREOPT_PREBUILTS := true
 
 # RIL
 BOARD_RIL_CLASS := ../../../device/lge/msm7x27a-common/ril
+TARGET_NEEDS_NON_PIE_SUPPORT := true
 
 USE_DEVICE_SPECIFIC_CAMERA := true
 
