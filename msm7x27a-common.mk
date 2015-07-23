@@ -164,14 +164,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
 
+# AwesomePlayer
 PRODUCT_PROPERTY_OVERRIDES += \
-   media.stagefright.enable-player=true \
-   media.stagefright.enable-meta=false \
-   media.stagefright.enable-scan=true \
-   media.stagefright.enable-http=true \
-   media.stagefright.enable-fma2dp=true \
-   media.stagefright.enable-aac=true \
-   media.stagefright.enable-qcp=true
+    media.stagefright.use-awesome=true
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=/system/lib/libqc-opt.so
