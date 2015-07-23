@@ -147,8 +147,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Qcom properties
 PRODUCT_PROPERTY_OVERRIDES += \
-    debug.composition.type=dyn \
-    persist.hwc.mdpcomp.enable=false \
+    debug.composition.type=mdp \
+    persist.hwc.mdpcomp.enable=true \
     com.qc.hardware=true \
     debug.mdpcomp.logs=0 \
     debug.gralloc.map_fb_memory=1 \
