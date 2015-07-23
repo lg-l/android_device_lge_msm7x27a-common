@@ -79,6 +79,8 @@ MALLOC_IMPL := dlmalloc
 # Enable Minikin text layout engine (will be the default soon)
 USE_MINIKIN := true
 
+# Don't generate block mode update zips
+BLOCK_BASED_OTA := false
 
 # QCOM  display stuffs
 BOARD_USES_QCOM_HARDWARE := true
