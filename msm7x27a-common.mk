@@ -215,6 +215,11 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Newer camera API isn't supported.
 PRODUCT_PROPERTY_OVERRIDES += \
    camera2.portability.force_api=1
+   
+# For applications to determine if they should turn off specific memory-intensive
+# features that work poorly on low-memory devices.
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.config.low_ram=true
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 PRODUCT_MANUFACTURER := LGE
