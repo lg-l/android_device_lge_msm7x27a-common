@@ -16,6 +16,8 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 $(call inherit-product, vendor/lge/msm7x27a-common/msm7x27a-common-vendor.mk)
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
 
+PRODUCT_BOOT_JARS += qcmediaplayer
+
 DEVICE_PACKAGE_OVERLAYS += device/lge/msm7x27a-common/overlay
 
 PRODUCT_COPY_FILES += \
@@ -167,6 +169,9 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # AwesomePlayer
 PRODUCT_PROPERTY_OVERRIDES += \
     media.stagefright.use-awesome=true
+    
+# qcmediaplayer
+    PRODUCT_PACKAGES += qcmediaplayer
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=/system/lib/libqc-opt.so
@@ -182,7 +187,6 @@ PRODUCT_PACKAGES += \
 # Disable atlas services on low-ram targets
 PRODUCT_PROPERTY_OVERRIDES += \
   config.disable_atlas=true 
-
 
 # Use ART small mode
 PRODUCT_PROPERTY_OVERRIDES += \
