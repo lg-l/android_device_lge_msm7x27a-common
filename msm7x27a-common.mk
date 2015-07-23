@@ -218,6 +218,15 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # features that work poorly on low-memory devices.
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.low_ram=true
+    
+# Other
+PRODUCT_PACKAGES += \
+    dexpreopt 
+
+# Disable strict mode
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.strictmode.visual=0 \
+    persist.sys.strictmode.disable=1
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 PRODUCT_MANUFACTURER := LGE
