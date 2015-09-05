@@ -13,6 +13,8 @@
 # limitations under the License.
 $(call inherit-product, vendor/lge/msm7x27a-common/msm7x27a-common-vendor.mk)
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
+$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 
 PRODUCT_BOOT_JARS += qcmediaplayer
 
@@ -155,12 +157,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=131072
 
-PRODUCT_PROPERTY_OVERRIDES += \
-    persist.fuse_sdcard=true \
-    audio.gapless.playback.disable=true \
-    ro.sys.fw.bg_apps_limit=20 \
-    ro.config.max_starting_bg=8
-
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
 
@@ -201,18 +197,21 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.fuse_sdcard=true \
-    audio.offload.disable=1
+    audio.offload.disable=1 \
     audio.gapless.playback.disable=true \
     ro.sys.fw.bg_apps_limit=10 \
     ro.config.max_starting_bg=6
 
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp \
-    ro.vold.umsdirtyratio=50
-
 # Newer camera API isn't supported.
 PRODUCT_PROPERTY_OVERRIDES += \
    camera2.portability.force_api=1
+   
+# Development settings
+ADDITIONAL_DEFAULT_PROPERTIES += \
+    ro.debuggable=1 \
+    ro.secure=0 \
+    ro.allow.mock.location=0 \
+    persist.service.adb.enable=1
    
 # For applications to determine if they should turn off specific memory-intensive
 # features that work poorly on low-memory devices.
