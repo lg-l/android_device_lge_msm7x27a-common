@@ -13,10 +13,7 @@
 # limitations under the License.
 $(call inherit-product, vendor/lge/msm7x27a-common/msm7x27a-common-vendor.mk)
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
-$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-
-PRODUCT_BOOT_JARS += qcmediaplayer
 
 DEVICE_PACKAGE_OVERLAYS += device/lge/msm7x27a-common/overlay
 
@@ -29,8 +26,7 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/7k_handset.kl:system/usr/keylayout/7k_handset.kl \
-    $(LOCAL_PATH)/configs/7x27a_kp.kl:system/usr/keylayout/7x27a_kp.kl \
-    $(LOCAL_PATH)/configs/AudioFilter.csv:system/etc/AudioFilter.csv
+    $(LOCAL_PATH)/configs/7x27a_kp.kl:system/usr/keylayout/7x27a_kp.kl 
 
 # Media
 PRODUCT_COPY_FILES += \
@@ -63,22 +59,21 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/wlan/firmware/WCN1314_qcom_cfg.ini:system/etc/firmware/wlan/volans/WCN1314_qcom_cfg.ini
 endif
 
-# Permission files
-PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
-    frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
-    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
-    frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
-    frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
-    frameworks/native/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
-    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
-    frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
-    frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
-    frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
-    frameworks/native/data/etc/android.hardware.usb.host.xml:system/etc/permissions/android.hardware.usb.host.xml \
-    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml
 
-# display HALS
+# Permissions
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
+    frameworks/native/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
+    frameworks/native/data/etc/android.hardware.sensor.accelerometer.xml:system/etc/permissions/android.hardware.sensor.accelerometer.xml \
+    frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml \
+    frameworks/native/data/etc/android.hardware.sensor.light.xml:system/etc/permissions/android.hardware.sensor.light.xml \
+    frameworks/native/data/etc/android.hardware.sensor.proximity.xml:system/etc/permissions/android.hardware.sensor.proximity.xml \
+    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.distinct.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.distinct.xml \
+    frameworks/native/data/etc/android.hardware.usb.accessory.xml:system/etc/permissions/android.hardware.usb.accessory.xml \
+    frameworks/native/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
+    frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
+    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
+
 PRODUCT_PACKAGES += \
     libgenlock \
     copybit.msm7x27a \
@@ -93,12 +88,10 @@ PRODUCT_PACKAGES += \
     charger \
     charger_res_images
 
-# Omx
 PRODUCT_PACKAGES += \
     libmm-omxcore \
     libOmxCore \
-    libstagefrighthw \
-    libdashplayer
+    libstagefrighthw
 
 # Gps hal
 PRODUCT_PACKAGES += \
@@ -128,11 +121,24 @@ PRODUCT_PACKAGES += \
     audio.a2dp.default \
     audio.usb.default \
     libaudioutils
-
+    
 # light hal
 PRODUCT_PACKAGES += \
     lights.msm7x27a
 
+# Stagefright
+PRODUCT_PROPERTY_OVERRIDES += \
+   media.stagefright.enable-player=true \
+   media.stagefright.enable-meta=false \
+   media.stagefright.enable-scan=true \
+   media.stagefright.enable-http=true \
+   media.stagefright.enable-fma2dp=true \
+   media.stagefright.enable-aac=true \
+   media.stagefright.enable-qcp=true
+
+PRODUCT_PROPERTY_OVERRIDES += \
+   mm.enable.smoothstreaming=true  
+    
 # Radio properties
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.telephony.ril_class=LGEQualcommUiccRIL \
@@ -147,25 +153,18 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.apm_sim_not_pwdn=1
 
 # Qcom properties
-PRODUCT_PROPERTY_OVERRIDES += \
-    debug.composition.type=mdp \
-    persist.hwc.mdpcomp.enable=true \
-    com.qc.hardware=true \
+    PRODUCT_PROPERTY_OVERRIDES += \
+    debug.composition.type=dyn \
+    debug.hwc.dynThreshold=1.9 \
+    persist.hwc.mdpcomp.enable=false \
+    debug.mdpcomp.logs=0 \
     debug.gralloc.map_fb_memory=1 \
-    debug.hwc.fakevsync=1
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.opengles.version=131072
-
+    debug.hwc.fakevsync=1 \
+    ro.max.fling_velocity=4000 \
+    ro.opengles.version=131072 
+    
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
-
-# AwesomePlayer
-PRODUCT_PROPERTY_OVERRIDES += \
-    media.stagefright.use-awesome=true
-    
-# qcmediaplayer
-    PRODUCT_PACKAGES += qcmediaplayer
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.extension_library=/system/lib/libqc-opt.so
@@ -194,6 +193,10 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
    dalvik.vm.dex2oat-Xmx=96m \
    dalvik.vm.image-dex2oat-Xms=48m \
    dalvik.vm.image-dex2oat-Xmx=48m
+   
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.heapgrowthlimit=52m \
+    dalvik.vm.heapsize=128m
 
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.fuse_sdcard=true \
@@ -218,10 +221,6 @@ ADDITIONAL_DEFAULT_PROPERTIES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.low_ram=true
     
-# Other
-PRODUCT_PACKAGES += \
-    dexpreopt 
-
 # Disable strict mode
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.strictmode.visual=0 \
