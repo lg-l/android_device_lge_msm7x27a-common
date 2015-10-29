@@ -134,6 +134,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 PRODUCT_PROPERTY_OVERRIDES += \
    mm.enable.smoothstreaming=true  
+   
+# Low Power Audio
+PRODUCT_PROPERTY_OVERRIDES += \
+    lpa.decode=true
     
 # Radio properties
 PRODUCT_PROPERTY_OVERRIDES += \
