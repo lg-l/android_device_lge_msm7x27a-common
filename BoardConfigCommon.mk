@@ -131,12 +131,19 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
 BOARD_SCREENRECORD_LANDSCAPE_ONLY := true
 
 # Enable dex-preoptimization to speed up first boot sequence
-WITH_DEXPREOPT := true
+ifeq ($(HOST_OS),linux)
+  ifeq ($(TARGET_BUILD_VARIANT),userdebug)
+    ifeq ($(WITH_DEXPREOPT),)
+      WITH_DEXPREOPT := true
+    endif
+  endif
+endif
+WITH_DEXPREOPT_PIC := true
+DONT_DEXPREOPT_PREBUILTS := true
 
 # RIL
 BOARD_PROVIDES_LIBRIL := true
 BOARD_RIL_CLASS := ../../../device/lge/msm7x27a-common/ril
-TARGET_NEEDS_NON_PIE_SUPPORT := true
 
 USE_DEVICE_SPECIFIC_CAMERA := true
 
