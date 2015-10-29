@@ -147,6 +147,7 @@ ARCH_ARM_HAVE_32_BYTE_CACHE_LINES := true
 TARGET_GRALLOC_USES_ASHMEM := true
 
 TARGET_PROVIDES_LIBLIGHT := true
+TARGET_NEEDS_NON_PIE_SUPPORT := true
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
